@@ -38,14 +38,19 @@ export const getPrerequisitesForTopic = asyncHandler(async (req, res) => {
     
     try {
         const result = await getPrerequisites(topic);
+        // result is now { topic, prerequisites, key_points, brief_summary, ... }
         return res.status(200).json(
-            new ApiResponse(200, result.prerequisites, "Prerequisites fetched successfully")
+            new ApiResponse(200, result, "Prerequisites and Study Notes fetched successfully")
         );
     } catch (err) {
         // Fallback to mock if AI fails
         const prerequisites = PREREQUISITES[topic] || ["Basic concepts"];
         return res.status(200).json(
-            new ApiResponse(200, prerequisites, "Prerequisites fetched successfully (Fallback)")
+            new ApiResponse(200, { 
+                prerequisites, 
+                key_points: ["Review the foundational principles of this topic."],
+                brief_summary: "Essential foundation for your practice session."
+            }, "Fallback prerequisites fetched")
         );
     }
 });

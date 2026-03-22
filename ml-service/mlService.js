@@ -159,10 +159,15 @@ export const getPrerequisites = async (topic) => {
     try {
         const mlServiceUrl = process.env.ML_SERVICE_URL || 'http://localhost:8000';
         const response = await axios.post(`${mlServiceUrl}/prerequisites`, { topic }, { timeout: 10000 });
-        return response.data;
+        return response.data; // Now returns { topic, prerequisites, key_points, brief_summary, ... }
     } catch (error) {
         console.error("[ML-Service] Prerequisites Retrieval Failed:", error.message);
-        return { prerequisites: ["Basic concepts"], estimated_revision_time: "Unknown" };
+        return { 
+            prerequisites: ["Basic concepts"], 
+            key_points: ["Review the foundational principles of this topic."],
+            brief_summary: "Review these core concepts before starting.",
+            estimated_revision_time: "15 minutes" 
+        };
     }
 };
 
